@@ -14,3 +14,13 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/photo','PhotoController@index');
+Route::get('/content','PhotoController@content');
+Route::get('/chengtu','ActivityController@chengtu');
+Route::get('/jiegou','ActivityController@jiegou');
+Route::get('/bimsoft','ActivityController@bimsoft');
+Route::get('/bimgrass','ActivityController@bimgrass');
+Route::get('/cadstill','ActivityController@cadstill');
+Route::get('/building','ActivityController@building');
+Route::get('/poker','ActivityController@poker');
+Route::get('/bridge','ActivityController@bridge');
