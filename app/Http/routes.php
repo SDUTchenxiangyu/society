@@ -24,3 +24,6 @@ Route::get('/cadstill','ActivityController@cadstill');
 Route::get('/building','ActivityController@building');
 Route::get('/poker','ActivityController@poker');
 Route::get('/bridge','ActivityController@bridge');
+Route::get('/signin','AdminController@signin');
+Route::get('/signup','AdminController@signup');
+Route::post('/signin','AdminController@ysignin');

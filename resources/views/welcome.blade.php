@@ -49,7 +49,7 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="{{url('/photo')}}">比赛风采</a></li>
+              <li><a href="{{url('/photo')}}">比赛风采</a></li>
               <li><a href="{{url('/content')}}">活动总览</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">具体活动<span class="caret"></span></a>
@@ -69,8 +69,8 @@
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="../navbar-static-top/">登陆</a></li>
-              <li><a href="../navbar-fixed-top/">注册</a></li>
+              <li><a href="{{url('/signup')}}">登陆</a></li>
+              <li><a href="{{url('/signin')}}">注册</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -78,10 +78,10 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>Navbar example</h1>
-        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+        <h1>欢迎来到山理建工之家社团网站</h1>
+        <p>现在正在进行中的比赛有：X、X</p>
         <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+          <a class="btn btn-lg btn-primary" href="{{url('/more')}}" role="button">了解更多</a>
         </p>
       </div>
 
@@ -96,5 +96,14 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script>
+		var a = $('#navbar>ul>li').mouseover(function() {
+        	$(this).addClass("active");
+    	});
+
+    	var b = $('#navbar>ul>li').mouseout(function() {
+        	$(this).removeClass("active");
+    	})
+    </script>
   </body>
 </html>
