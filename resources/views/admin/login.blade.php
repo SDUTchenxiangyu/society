@@ -36,10 +36,12 @@
   <body>
 
     <div class="container">
+      @if($errors->first())
         <div class="alert alert-danger alert-dismissible" id="alertjgzj" role="alert">
             <button type="button" id="myAlert" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Warning!</strong> Better check yourself, you're not looking too good.
+            <strong>警告,</strong>{{$errors->first()}}
         </div>
+      @endif
       <form class="form-signin" action="{{url('/signin')}}" method="post">
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
         <h2 class="form-signin-heading">会员注册</h2>
