@@ -40,4 +40,8 @@ class ActivityController extends Controller
     {
         echo "这是纸桥承重比赛页面！";
     }
+    public function more()
+    {
+        echo "这是详情页！";
+    }
 }

@@ -69,6 +69,28 @@ class AdminController extends Controller
     public function ysignup(Request $request)
     {
         $input = $request->all();
-        dd($input);
+        $chaxunyanzheng = new Huiyuan;
+        $chaxunyanzheng = $chaxunyanzheng->where('number',$input['number'])->first();
+        if(!$chaxunyanzheng)
+        {
+            return redirect('signup')->with('err',"无此用户！");
+        }
+        $password = $chaxunyanzheng['password'];
+        if($password!=$input['password'])
+        {
+            return redirect('signup')->with('err',"密码不正确！");
+        }
+        
+        $number = $input['number'];
+        $name = $chaxunyanzheng['name'];
+        session(['number' => $number]);
+        session(['name' => $name]);
+        return redirect('/');
+    }
+    public function signout(Request $request)
+    {
+        $request->session()->forget('number');
+        $request->session()->forget('name');
+        return redirect('/');
     }
 }

@@ -68,9 +68,15 @@
                 </ul>
               </li>
             </ul>
+           
             <ul class="nav navbar-nav navbar-right">
+            @if(Session::has('name'))
+              <li><a href="#">{{Session::get('name')}}</a></li>
+              <li><a href="{{url('/signout')}}">登出</a></li>
+            @else
               <li><a href="{{url('/signup')}}">登陆</a></li>
               <li><a href="{{url('/signin')}}">注册</a></li>
+            @endif
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -79,7 +85,7 @@
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <h1>欢迎来到山理建工之家社团网站</h1>
-        <p>现在正在进行中的比赛有：X、X</p>
+        <p>现在正在进行中的比赛有：建筑之美、CAD技能大赛</p>
         <p>
           <a class="btn btn-lg btn-primary" href="{{url('/more')}}" role="button">了解更多</a>
         </p>
