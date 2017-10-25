@@ -5,17 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Http\Requests;
+use App\Huiyuan;
 
 class AdminController extends Controller
 {
+    // get方式注册
     public function signin()
     {
         return view('admin.login');
     }
+    // get方式登陆
     public function signup()
     {
-        echo "这是登录界面";
+        return view('admin.signup');
     }
+    // post方式注册
     public function ysignin(Request $request)
     {
         
@@ -42,5 +46,29 @@ class AdminController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+        $huiyuan = new Huiyuan;
+        $huiyuan_yanzheng = $huiyuan->where('number',$input['number'])->first();
+        if($huiyuan_yanzheng)
+        {
+            return redirect('signin')->with('err',"用户已存在");
+        }
+        $huiyuan->name = $input['name'];
+        $huiyuan->number = $input['number'];
+        $huiyuan->mphone = $input['mphone'];
+        $huiyuan->password = $input['password'];
+        if($huiyuan->save())
+        {
+            return redirect('signup')->with('success',$input['name']);
+        }
+        else
+        {
+            return redirect('signin')->with('err','系统故障，注册失败，请稍后再试！');
+        }
+    }
+    // post方式登陆
+    public function ysignup(Request $request)
+    {
+        $input = $request->all();
+        dd($input);
     }
 }

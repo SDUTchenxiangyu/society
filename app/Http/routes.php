@@ -27,3 +27,4 @@ Route::get('/bridge','ActivityController@bridge');
 Route::get('/signin','AdminController@signin');
 Route::get('/signup','AdminController@signup');
 Route::post('/signin','AdminController@ysignin');
+Route::post('/signup','AdminController@ysignup');

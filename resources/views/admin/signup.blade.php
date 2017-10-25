@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>网站会员注册</title>
+    <title>网站会员登陆</title>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 
     <!-- Bootstrap core CSS -->
@@ -47,19 +47,20 @@
             <strong>警告,</strong>{{Session::get('err')}}
         </div>
       @endif
-      
-      <form class="form-signin" action="{{url('/signin')}}" method="post">
+      @if(Session::has('success'))
+        <div class="alert alert-success alert-dismissible" id="alertjgzj" role="alert">
+            <button type="button" id="myAlert" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>恭喜你,{{Session::get('success')}}</strong>，注册成功！
+        </div>
+      @endif
+      <form class="form-signin" action="{{url('/signup')}}" method="post">
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-        <h2 class="form-signin-heading">会员注册</h2>
+        <h2 class="form-signin-heading">会员登陆</h2>
         <label for="inputEmail" class="sr-only">学号</label>
         <input type="text" id="inputusenumber" name="number" class="form-control" placeholder="学号" required autofocus>
-        <label for="inputEmail" class="sr-only">姓名</label>
-        <input type="text" id="inputname" name="name" class="form-control" placeholder="姓名" required autofocus>
-        <label for="inputEmail" class="sr-only">手机号</label>
-        <input type="text" id="inputmphone" name="mphone" class="form-control" placeholder="手机号" required autofocus>
         <label for="inputPassword" class="sr-only">密码</label>
         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="密码" required>
-        <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+        <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
       </form>
 
     </div> <!-- /container -->
