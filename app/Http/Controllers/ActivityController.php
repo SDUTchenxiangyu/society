@@ -56,6 +56,10 @@ class ActivityController extends Controller
     }
     public function baoming(Request $request)
     {
+        if(!session()->has('number'))
+        {
+            return redirect('signup')->with('err','您未登陆，请先登陆');
+        }
         $session = session()->all();
         $input = $request->input();
         $match = new Usermatch;
