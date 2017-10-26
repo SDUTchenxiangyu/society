@@ -31,3 +31,4 @@ Route::post('/signup','AdminController@ysignup');
 Route::get('/signout','AdminController@signout');
 Route::get('/more','ActivityController@more');
 Route::post('/baoming','ActivityController@baoming');
+Route::get('/houtai','AdminController@houtai');

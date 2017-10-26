@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Http\Requests;
 use App\Huiyuan;
+use App\Usermatch;
+use App\Matchname;
+use App\Baomingbiao;
 
 class AdminController extends Controller
 {
@@ -92,5 +95,26 @@ class AdminController extends Controller
         $request->session()->forget('number');
         $request->session()->forget('name');
         return redirect('/');
+    }
+    public function houtai()
+    {
+        $number = new Usermatch;
+        $huiyuan = new Huiyuan;
+        $name = new Matchname;
+        
+        $matchnumber = $number->count();
+        for($i=1;$matchnumber>=$i;$i++)
+        {
+            $baomingbiao = new Baomingbiao;
+            $numbertemp = $number->where('id',$i)->first();
+            $nametemp = $name->where('id',$numbertemp['match'])->first();
+            $huiyuantemp = $huiyuan->where('number',$numbertemp['number'])->first();
+            $baomingbiao->name = $huiyuantemp['name'];
+            $baomingbiao->mphone = $huiyuantemp['mphone'];
+            $baomingbiao->matchnum = $numbertemp['match'];
+            $baomingbiao->matchname = $nametemp['name'];
+            $baomingbiao->save();
+        }
+        return "报名表已整理完毕，请下载！";
     }
 }

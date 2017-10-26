@@ -52,7 +52,24 @@ class ActivityController extends Controller
     }
     public function more()
     {
-        echo "这是详情页！";
+        //详情页
+        if(!session()->has('number'))
+        {
+            return redirect('signup')->with('err','您未登陆，请先登陆');
+        }
+        $session = session()->all();
+        $match = new Usermatch;
+        
+        $match = $match->where('number',$session['number'])->get();
+        $user = [];
+        foreach($match as $matchs)
+        {
+            $username = $session['name'];
+            $name = new Matchname;
+            $name = $name->where('id',$matchs['match'])->first();
+            $user = array_prepend($user,$name);
+        }
+        return view('layout.more',['users'=>$user]);
     }
     public function baoming(Request $request)
     {
