@@ -7,6 +7,7 @@ use App\Huiyuan;
 use App\Matchname;
 use App\Usermatch;
 use App\Http\Requests;
+use App\Tame;
 
 class ActivityController extends Controller
 {
@@ -77,23 +78,91 @@ class ActivityController extends Controller
         {
             return redirect('signup')->with('err','您未登陆，请先登陆');
         }
+        $path = url()->previous();
+        $re = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
+        preg_match ($re,$path,$pth);
         $session = session()->all();
         $input = $request->input();
         $match = new Usermatch;
         $matchy = $match->where('number',$session['number'])->where('match',$input['match'])->first();
         if($matchy['match'])
         {
-            return redirect('chengtu')->with('err','您已报名，请勿重复报名');
+            return redirect($pth[5])->with('err','您已报名，请勿重复报名');
         }
         $match->match = $input['match'];
         $match->number = $session['number'];
         if($match->save())
         {
-            return redirect('chengtu')->with('success',$session['name']);
+            return redirect($pth[5])->with('success',$session['name']);
         } 
         else
         {
-            return redirect('chengtu')->with('err','系统故障，注册失败，请稍后再试！');
+            return redirect($pth[5])->with('err','系统故障，注册失败，请稍后再试！');
+        }
+    }
+    public function tamebaoming(Request $request)
+    {
+        if(!session()->has('number'))
+        {
+            return redirect('signup')->with('err','您未登陆，请先登陆');
+        }
+        $path = url()->previous();
+        $re = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
+        preg_match ($re,$path,$pth);
+        $input = $request->input();
+        $usermatch = new Usermatch;
+        $session = session()->all();
+        $userone = $usermatch->where('match',$input['match'])->where('number',$input['peopleone'])->get();
+        if(isset($userone['match']))
+        {
+            return redirect($pth[5])->with('err','队员1已报名，请勿重复报名');
+        }
+        $usertwo = $usermatch->where('match',$input['match'])->where('number',$input['peopletwo'])->get();
+        if(isset($usertwo['match']))
+        {
+            return redirect($pth[5])->with('err','队员2已报名，请勿重复报名');
+        }
+        $matchy = $usermatch->where('number',$session['number'])->where('match',$input['match'])->first();
+        if(isset($matchy['match']))
+        {
+            return redirect($pth[5])->with('err','您已报名，请勿重复报名');
+        }
+        $tame = new Tame;
+        $tame = $tame->count();
+
+        // $re = '/(\w*)+/';
+        
+        for($i=0;$i<1;$i++)
+        {
+            $match1 = new Usermatch;
+            $match1->match = $input['match'];
+            $match1->number = $session['number'];
+            $match1->tame = $tame+1;
+            $match2 = new Usermatch;
+            $match2->match = $input['match'];
+            $match2->number = $input['peopleone'];
+            $match2->tame = $tame+1;
+            $match3 = new Usermatch;
+            $match3->match = $input['match'];
+            $match3->number = $input['peopletwo'];
+            $match3->tame = $tame+1;
+            if($match1->save()&&$match2->save()&&$match3->save())
+            {
+                $tamematch = new Tame;
+                $tamematch->number = $session['number'];
+                if($tamematch->save())
+                {
+                    return redirect($pth[5])->with('success',$session['name']);
+                }
+                else
+                {
+                    return redirect($pth[5])->with('err','系统故障，注册失败，请稍后再试！');
+                }
+            } 
+            else
+            {
+                return redirect($pth[5])->with('err','系统故障，注册失败，请稍后再试！');
+            }
         }
     }
 }
