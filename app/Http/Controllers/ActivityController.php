@@ -112,6 +112,18 @@ class ActivityController extends Controller
         $input = $request->input();
         $usermatch = new Usermatch;
         $session = session()->all();
+        $yusermatch = new Huiyuan;
+        $yusermatch1 = $yusermatch->where('number',$input['peopleone'])->first();
+        // dd($yusermatch1);
+        if($yusermatch1==null)
+        {
+            return redirect($pth[5])->with('err','队员1未注册，请队员1先完成网站注册');
+        }
+        $yusermatch2 = $yusermatch->where('number',$input['peopletwo'])->first();
+        if($yusermatch2==null)
+        {
+            return redirect($pth[5])->with('err','队员2未注册，请队员2先完成网站注册');
+        }
         $userone = $usermatch->where('match',$input['match'])->where('number',$input['peopleone'])->get();
         if(isset($userone['match']))
         {
