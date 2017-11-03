@@ -83,6 +83,12 @@ class ActivityController extends Controller
         preg_match ($re,$path,$pth);
         $session = session()->all();
         $input = $request->input();
+        $matchname = new Matchname;
+        $matchname = $matchname->where('id',$input['match'])->first();
+        if(!$matchname['open'])
+        {
+            return redirect($pth[5])->with('err','本项比赛尚未开放报名！');
+        }
         $match = new Usermatch;
         $matchy = $match->where('number',$session['number'])->where('match',$input['match'])->first();
         if($matchy['match'])
@@ -110,6 +116,12 @@ class ActivityController extends Controller
         $re = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
         preg_match ($re,$path,$pth);
         $input = $request->input();
+        $matchname = new Matchname;
+        $matchname = $matchname->where('id',$input['match'])->first();
+        if(!$matchname['open'])
+        {
+            return redirect($pth[5])->with('err','本项比赛尚未开放报名！');
+        }
         $usermatch = new Usermatch;
         $session = session()->all();
         $yusermatch = new Huiyuan;
