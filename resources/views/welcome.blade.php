@@ -71,7 +71,7 @@
            
             <ul class="nav navbar-nav navbar-right">
             @if(Session::has('name'))
-              <li><a href="#">{{Session::get('name')}}</a></li>
+              <li><a href="{{url('/self')}}">{{Session::get('name')}}</a></li>
               <li><a href="{{url('/signout')}}">登出</a></li>
             @else
               <li><a href="{{url('/signup')}}">登陆</a></li>

@@ -9,6 +9,7 @@ use App\Huiyuan;
 use App\Usermatch;
 use App\Matchname;
 use App\Baomingbiao;
+use App\Power;
 
 class AdminController extends Controller
 {
@@ -129,5 +130,28 @@ class AdminController extends Controller
         }
         // $session = session()->push('mathc',$matchopen);
         return view('welcome',['matchopen'=>$matchopen]);
+    }
+    public function self()
+    {
+        return view('admin.power');
+    }
+    public function power(Request $request)
+    {
+        if(!session()->has('number'))
+        {
+            return redirect('signup')->with('err','您未登陆，请先登陆');
+        }
+        $input = $request->input();
+        $power = new Power;
+        $session = session()->all();
+        $password = $power->where('number',$session['number'])->first();
+        if($password['password']==$input['password'])
+        {
+            return redirect('self')->with('success',"已成功登陆，欢迎你，社团的贡献者！");
+        }
+        else
+        {
+            return redirect('signup')->with('err',"密码不正确！");
+        }
     }
 }
