@@ -117,4 +117,17 @@ class AdminController extends Controller
         }
         return "报名表已整理完毕，请下载！";
     }
+    public function welcome()
+    {
+        $match = new Matchname;
+        $matchname = $match->where('open',1)->get();
+        $count = $matchname->count();
+        for($i=0;$i<$count;$i++)
+        {
+            $matchopen[$i] = $matchname[$i]['name'];
+            // $session = session(["match[$i]"=>$matchname[$i]['name']]);
+        }
+        // $session = session()->push('mathc',$matchopen);
+        return view('welcome',['matchopen'=>$matchopen]);
+    }
 }

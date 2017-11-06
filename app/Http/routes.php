@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/','AdminController@welcome');
 Route::get('/photo','PhotoController@index');
 Route::get('/content','PhotoController@content');
 Route::get('/chengtu','ActivityController@chengtu');
