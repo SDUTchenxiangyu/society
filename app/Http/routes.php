@@ -34,3 +34,7 @@ Route::get('/houtai','AdminController@houtai');
 Route::post('/tamebaoming','ActivityController@tamebaoming');
 Route::get('/self','AdminController@self');
 Route::post('/self','AdminController@power');
+Route::get('/dice','DiceController@index');
+Route::post('/dice','DiceController@yanzheng');
+Route::get('/dicechouqian','DiceController@cindex');
+Route::post('/dicechouqian','DiceController@chouqian');
