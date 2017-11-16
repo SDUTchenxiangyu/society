@@ -168,7 +168,7 @@ class DiceController extends Controller
             $users1111 = $user11->where('number',$usersss['number'])->first();
             $user11->name = $users1111['name'];
             $user11->phone = $users1111['mphone'];
-            $user11->tame = $tamenumber['tame'];
+            $user11->tame = $tamenumber;
             $user11->power = $number;
             $user11->save();
         }
