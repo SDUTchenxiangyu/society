@@ -156,7 +156,6 @@ class DiceController extends Controller
             }
             $number = rand(1,$tame);
         }
-        if()
         $power = new Dice;
         
         $user = new Huiyuan;
