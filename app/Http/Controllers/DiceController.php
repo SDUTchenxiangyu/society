@@ -143,7 +143,7 @@ class DiceController extends Controller
         {
             $yanzheng = new Dice;
             $yes = $yanzheng->where('power',$number)->first();
-            if(!$yes)
+            if($yes==null)
             {
                 break;
             }
@@ -153,5 +153,15 @@ class DiceController extends Controller
         $session = session()->all();
         $user = new Huiyuan;
         $users = $user->where('number',$session['number'])->first();
+        $user1 = new Huiyuan;
+        $userss1 = new Usermatch;
+        $tamenumber = $userss1->where('match',9)->where('number',$session['number'])->first();
+        if($tamenumber == null)
+        {
+            return redirect($pth[5])->with('err','您未参加本项比赛！');
+        }
+        $tamenumber = $tamenumber['tame'];
+        $users1 = $userss1->where('tame',$tamenumber)->get();
+        dd($users1);
     }
 }
