@@ -130,12 +130,19 @@ class DiceController extends Controller
         preg_match ($re,$path,$pth);
         $input = $request->input();
         $matchname = new Matchname;
+        $session = session()->all();
         $matchname = $matchname->where('id',$input['match'])->first();
         if(!$matchname['open'])
         {
             return redirect($pth[5])->with('err','本项比赛尚未开始抽签！');
         }
         $usermatch = new Usermatch;
+        $jiance = new Dice;
+        $jiance = $jiance->where('number',$session['number'])->first();
+        if($jiance != null)
+        {
+            return redirect($pth[5])->with('success',"您的队伍的号码是".$number);
+        }
         $tamecount = $usermatch->where('match',9)->count();
         $tame = $tamecount/4;
         $number = rand(1,$tame);
@@ -150,7 +157,7 @@ class DiceController extends Controller
             $number = rand(1,$tame);
         }
         $power = new Dice;
-        $session = session()->all();
+        
         $user = new Huiyuan;
         $users = $user->where('number',$session['number'])->first();
         $user1 = new Huiyuan;
@@ -171,6 +178,7 @@ class DiceController extends Controller
             $user111->phone = $users1111['mphone'];
             $user111->tame = $tamenumber;
             $user111->power = $number;
+            $user111->number = $users1111['number'];
             $user111->save();
         }
         return redirect($pth[5])->with('success',"您的队伍的号码是".$number);
