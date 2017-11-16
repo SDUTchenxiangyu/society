@@ -165,12 +165,13 @@ class DiceController extends Controller
         foreach($users1 as $usersss)
         {
             $user11 = new Huiyuan;
+            $user111 = new Dice;
             $users1111 = $user11->where('number',$usersss['number'])->first();
-            $user11->name = $users1111['name'];
-            $user11->phone = $users1111['mphone'];
-            $user11->tame = $tamenumber;
-            $user11->power = $number;
-            $user11->save();
+            $user111->name = $users1111['name'];
+            $user111->phone = $users1111['mphone'];
+            $user111->tame = $tamenumber;
+            $user111->power = $number;
+            $user111->save();
         }
         return redirect($pth[5])->with('success',"您的队伍的号码是".$number);
     }
