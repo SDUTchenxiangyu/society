@@ -64,7 +64,10 @@
                     <li class="dropdown-header">会员活动</li>
                     <li><a href="{{url('/building')}}">建筑之美</a></li>
                     <li><a href="{{url('/poker')}}">纸牌搭楼</a></li>
-                    <li><a href="{{url('/bridge')}}">纸桥承重</a></li>                    
+                    <li><a href="{{url('/bridge')}}">纸桥承重</a></li>  
+                    <li class="dropdown-header">技术支持</li>    
+                    <li><a href="{{url('/dice')}}">测量之星大赛</a></li> 
+                    <li><a href="{{url('/bridge')}}">测量之星大赛抽签</a></li>               
                 </ul>
               </li>
             </ul>
