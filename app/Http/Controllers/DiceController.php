@@ -162,6 +162,16 @@ class DiceController extends Controller
         }
         $tamenumber = $tamenumber['tame'];
         $users1 = $userss1->where('tame',$tamenumber)->get();
-        dd($users1);
+        foreach($users1 as $usersss)
+        {
+            $user11 = new Huiyuan;
+            $users1111 = $user11->where('number',$usersss['number'])->first();
+            $user11->name = $users1111['name'];
+            $user11->phone = $users1111['mphone'];
+            $user11->tame = $tamenumber['tame'];
+            $user11->power = $number;
+            $user11->save();
+        }
+        return redirect($pth[5])->with('success',"您的队伍的号码是".$number);
     }
 }
