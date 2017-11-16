@@ -141,12 +141,12 @@ class DiceController extends Controller
         $jiance = $jiance->where('number',$session['number'])->first();
         if($jiance != null)
         {
-            return redirect($pth[5])->with('success',"您的队伍的号码是".$number);
+            return redirect($pth[5])->with('success',"您的队伍的号码是".$jiance['number']);
         }
         $tamecount = $usermatch->where('match',9)->count();
         $tame = $tamecount/4;
         $number = rand(1,$tame);
-        for(;;)
+        for($i=1;$i<999;$i++)
         {
             $yanzheng = new Dice;
             $yes = $yanzheng->where('power',$number)->first();
@@ -156,6 +156,7 @@ class DiceController extends Controller
             }
             $number = rand(1,$tame);
         }
+        if()
         $power = new Dice;
         
         $user = new Huiyuan;
