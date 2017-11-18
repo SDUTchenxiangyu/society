@@ -201,7 +201,7 @@ class ActivityController extends Controller
         $re = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
         preg_match ($re,$path,$pth);
         $matchname = new Matchname;
-        $matchname = $matchname->where('id',9)->first();
+        $matchname = $matchname->where('id',11)->first();
         if(!$matchname['open'])
         {
             return redirect($pth[5])->with('err','本项比赛尚未开始抽签！');
