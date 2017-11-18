@@ -24,5 +24,7 @@
         <h2 class="form-signin-heading">CAD技能大赛报名</h2>
         <br>
         <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">报名</button>
+        <br>
+        <a class="btn btn-lg btn-primary btn-block" href="{{url('/cadchouqian')}}" role="button">座号抽签</a>
       </form>
 @stop

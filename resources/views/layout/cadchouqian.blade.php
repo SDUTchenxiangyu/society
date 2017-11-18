@@ -1,6 +1,6 @@
 @extends('mould.app')
 @section('content')
-      @if($errors->first())
+@if($errors->first())
         <div class="alert alert-danger alert-dismissible" id="alertjgzj" role="alert">
             <button type="button" id="myAlert" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <strong>警告,</strong>{{$errors->first()}}
@@ -18,16 +18,11 @@
             <strong>恭喜你,{{Session::get('success')}}</strong>，报名成功！
         </div>
       @endif
-      <form class="form-signin" action="{{url('/tamebaoming')}}" method="post">
+      <form class="form-signin" action="{{url('/cadchouqian')}}" method="post">
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
         <input type="hidden" name="match" value="2">
-        <h2 class="form-signin-heading">纸牌搭楼报名</h2>
-        <label for="inputEmail" class="sr-only">队员1学号</label>
-        <input type="text" id="inputusenumber" name="peopleone" class="form-control" placeholder="队员1学号" required autofocus>
-        <label for="inputEmail" class="sr-only">队员2学号</label>
-        <input type="text" id="inputusenumber" name="peopletwo" class="form-control" placeholder="队员2学号" required autofocus>
+        <h2 class="form-signin-heading">CAD技能大赛抽签</h2>
         <br>
         <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">报名</button>
       </form>
-
 @stop

@@ -8,6 +8,7 @@ use App\Matchname;
 use App\Usermatch;
 use App\Http\Requests;
 use App\Tame;
+use App\Cad;
 
 class ActivityController extends Controller
 {
@@ -188,5 +189,65 @@ class ActivityController extends Controller
                 return redirect($pth[5])->with('err','系统故障，注册失败，请稍后再试！');
             }
         }
+    }
+    public function cadchouqian()
+    {
+        if(!session()->has('number'))
+        {
+            return redirect('signup')->with('err','您未登陆，请先登陆');
+        }
+        $session = session()->all();
+        $path = url()->previous();
+        $re = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
+        preg_match ($re,$path,$pth);
+        $matchname = new Matchname;
+        $matchname = $matchname->where('id',9)->first();
+        if(!$matchname['open'])
+        {
+            return redirect($pth[5])->with('err','本项比赛尚未开始抽签！');
+        }
+        $usermatch = new Usermatch;
+        $jiance = new Cad;
+        $jiance = $jiance->where('number',$session['number'])->first();
+        if($jiance != null)
+        {
+            return redirect($pth[5])->with('success',"您的座号是".$jiance['number']);
+        }
+        $count = $usermatch->where('match',3)->count();
+        $number = rand(1,$count);
+        $level = (int)substr($session['number'],0,2);
+        for($i=1;$i<999;$i++)
+        {
+            $yanzheng = new Cad;
+            $yes = $yanzheng->where('power',$number)->first();
+            if($yes==null)
+            {
+                break;
+            }
+            $number = rand(1,$tame);
+        }
+        $power = new Cad;
+        $user = new Huiyuan;
+        $users = $user->where('number',$session['number'])->first();
+        $tamenumber = $usermatch->where('match',3)->where('number',$session['number'])->first();
+        if($tamenumber == null)
+        {
+            return redirect($pth[5])->with('err','您未参加本项比赛！');
+        }
+        $input = new Cad;
+        $input->name = $users['name'];
+        $input->phone = $users['mphone'];
+        $input->power = $number;
+        $input->number = $session['number'];
+        $input->level = $level;
+        if($input->save())
+        {
+            return redirect($pth[5])->with('success',"您的座号是".$number."。您的比赛等级为：".$level."级组。");
+        }
+        else
+        {
+            return redirect($pth[5])->with('err','系统故障！');
+        }
+        
     }
 }

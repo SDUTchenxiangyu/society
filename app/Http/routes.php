@@ -38,3 +38,4 @@ Route::get('/dice','DiceController@index');
 Route::post('/dice','DiceController@yanzheng');
 Route::get('/dicechouqian','DiceController@cindex');
 Route::post('/dicechouqian','DiceController@chouqian');
+Route::get('/cadchouqian','ActivityController@cadchouqian');
