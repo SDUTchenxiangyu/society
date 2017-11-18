@@ -211,7 +211,7 @@ class ActivityController extends Controller
         $jiance = $jiance->where('number',$session['number'])->first();
         if($jiance != null)
         {
-            return redirect($pth[5])->with('success',"您的座号是".$jiance['number']);
+            return redirect($pth[5])->with('success',"您的座号是".$jiance['power']);
         }
         $count = $usermatch->where('match',3)->count();
         $number = rand(1,$count);
