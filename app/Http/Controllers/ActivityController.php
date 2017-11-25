@@ -225,7 +225,7 @@ class ActivityController extends Controller
             {
                 break;
             }
-            $number = rand(1,$tame);
+            $number = rand(1,$count);
         }
         $power = new Cad;
         $user = new Huiyuan;
