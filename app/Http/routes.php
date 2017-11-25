@@ -39,3 +39,5 @@ Route::post('/dice','DiceController@yanzheng');
 Route::get('/dicechouqian','DiceController@cindex');
 Route::post('/dicechouqian','DiceController@chouqian');
 Route::get('/cadchouqian','ActivityController@cadchouqian');
+Route::get('/file','ActivityController@file');
+Route::post('/file','ActivityController@upload');
