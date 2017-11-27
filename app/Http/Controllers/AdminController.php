@@ -129,7 +129,14 @@ class AdminController extends Controller
             // $session = session(["match[$i]"=>$matchname[$i]['name']]);
         }
         // $session = session()->push('mathc',$matchopen);
-        return view('welcome',['matchopen'=>$matchopen]);
+        if($count)
+        {
+            return view('welcome',['matchopen'=>$matchopen]);
+        }
+        else
+        {
+            return view('welcome');
+        }
     }
     public function self()
     {

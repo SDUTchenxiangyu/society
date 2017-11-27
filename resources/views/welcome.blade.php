@@ -6,9 +6,9 @@
         <p>
           现在正在进行中的比赛有：
           @if(isset($matchopen))
-          @foreach($matchopen as $matchopens)
-            {{$matchopens}}；
-          @endforeach
+            @foreach($matchopen as $matchopens)
+              {{$matchopens}}；
+            @endforeach
           @else
           目前暂无比赛
           @endif
