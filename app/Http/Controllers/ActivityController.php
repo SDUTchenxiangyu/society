@@ -10,6 +10,9 @@ use App\Http\Requests;
 use App\Tame;
 use App\Cad;
 use Storage;
+global $regexp_url;
+//正则表达式匹配完会有一个带有六个数组元素的一维数组，数组第0个是完整网址，第1，2个是协议名，第3，4个是一级目录名，第五个是二级目录名
+$regexp_url = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
 
 class ActivityController extends Controller
 {
@@ -45,6 +48,8 @@ class ActivityController extends Controller
     }
     public function poker()
     {
+        global $chenxiangyu;
+        dd($chenxiangyu);
         //纸牌搭楼
         return view('layout.poker');
     }
@@ -84,6 +89,7 @@ class ActivityController extends Controller
     //报名的总控制器，其中包含了全套的认证、入库相关操作
     public function baoming(Request $request)
     {
+        global $regexp_url;
         if(!session()->has('number'))
         {
             //如果session里不存在“number”那么就将用户返回登陆页
@@ -92,9 +98,8 @@ class ActivityController extends Controller
         //获取用户上一个页面的url地址
         $path = url()->previous();
         //使用正则表达式将url地址分割，得到最后的二级url地址
-        $re = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
         //正则表达式匹配
-        preg_match ($re,$path,$pth);
+        preg_match ($regexp_url,$path,$pth);
         $session = session()->all();
         //获取提交值中的全部信息，其中应该包括，比赛名称代号
         $input = $request->input();
@@ -130,6 +135,7 @@ class ActivityController extends Controller
     //团队报名控制器，基本与上面的个人控制器一致
     public function tamebaoming(Request $request)
     {
+        global $regexp_url;
         if(!session()->has('number'))
         {
             //如果session里不存在“number”那么就将用户返回登陆页
@@ -138,9 +144,8 @@ class ActivityController extends Controller
         //获取用户上一个页面的url地址
         $path = url()->previous();
         //使用正则表达式将url地址分割，得到最后的二级url地址
-        $re = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
         //正则表达式匹配
-        preg_match ($re,$path,$pth);
+        preg_match ($regexp_url,$path,$pth);
         //获取request中的全部值，其中应该包括：队员1，2，3的学号，比赛代码
         $input = $request->input();
         //创建比赛名称表实例
@@ -236,14 +241,17 @@ class ActivityController extends Controller
     //CAD技能大赛抽取座号，用随机数生成，必须等报名结束后才能生成
     public function cadchouqian()
     {
+        global $regexp_url;
+        //检查session中是否存在学号
         if(!session()->has('number'))
         {
             return redirect('signup')->with('err','您未登陆，请先登陆');
         }
+        //获取全部session信息
         $session = session()->all();
+        //正则表达式匹配网址
         $path = url()->previous();
-        $re = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
-        preg_match ($re,$path,$pth);
+        preg_match ($regexp_url,$path,$pth);
         $matchname = new Matchname;
         $matchname = $matchname->where('id',11)->first();
         if(!$matchname['open'])
@@ -300,14 +308,14 @@ class ActivityController extends Controller
     }
     public function upload(Request $request)
     {
+        global $regexp_url;
         if(!session()->has('number'))
         {
             return redirect('signup')->with('err','您未登陆，请先登陆');
         }
         $session = session()->all();
         $path = url()->previous();
-        $re = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
-        preg_match ($re,$path,$pth);
+        preg_match ($regexp_url,$path,$pth);
         if ($request->isMethod('post')) 
         {
             $file = $request->file('picture');
