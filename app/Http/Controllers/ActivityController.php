@@ -10,6 +10,7 @@ use App\Http\Requests;
 use App\Tame;
 use App\Cad;
 use Storage;
+//定义全局变量regexp_url用于之后对url进行正则匹配
 global $regexp_url;
 //正则表达式匹配完会有一个带有六个数组元素的一维数组，数组第0个是完整网址，第1，2个是协议名，第3，4个是一级目录名，第五个是二级目录名
 $regexp_url = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
@@ -207,18 +208,22 @@ class ActivityController extends Controller
         //这个循环为什么要加？就只循环一次，明明就是你乱用数组key值，现在傻眼了吧233333
         for($i=0;$i<1;$i++)
         {
+            //队长信息
             $match1 = new Usermatch;
             $match1->match = $input['match'];
             $match1->number = $session['number'];
             $match1->tame = $tame+1;
+            //队员一信息
             $match2 = new Usermatch;
             $match2->match = $input['match'];
             $match2->number = $input['peopleone'];
             $match2->tame = $tame+1;
+            //队员二信息
             $match3 = new Usermatch;
             $match3->match = $input['match'];
             $match3->number = $input['peopletwo'];
             $match3->tame = $tame+1;
+            //入库操作，并在队伍表中登记信息，若都成功，则返回，若不成功，则返回之前操作页
             if($match1->save()&&$match2->save()&&$match3->save())
             {
                 $tamematch = new Tame;
@@ -252,22 +257,33 @@ class ActivityController extends Controller
         //正则表达式匹配网址
         $path = url()->previous();
         preg_match ($regexp_url,$path,$pth);
+        //从比赛信息表中查询比赛是否开启，是否可以抽签
         $matchname = new Matchname;
         $matchname = $matchname->where('id',11)->first();
         if(!$matchname['open'])
         {
             return redirect($pth[5])->with('err','本项比赛尚未开始抽签！');
         }
-        $usermatch = new Usermatch;
+        //检查用户是否已经报名
+        $tamenumber = $usermatch->where('match',3)->where('number',$session['number'])->first();
+        if($tamenumber == null)
+        {
+            return redirect($pth[5])->with('err','您未参加本项比赛！');
+        }
+        //检查用户是否已经抽出了座号，若抽出了座号，则将库中的座号反馈给用户
         $jiance = new Cad;
         $jiance = $jiance->where('number',$session['number'])->first();
         if($jiance != null)
         {
             return redirect($pth[5])->with('success',"您的座号是".$jiance['power']);
         }
+        //抽取座号，先检查有多少人报名CAD技能大赛，按照一到报名人数随机给出号码
+        $usermatch = new Usermatch;
         $count = $usermatch->where('match',3)->count();
         $number = rand(1,$count);
+        //按照用户学号信息查询是多少级的学生
         $level = (int)substr($session['number'],0,2);
+        //防止抽到一样的座号，进行999次循环，反复抽取号码，直到库里没有该号码停止
         for($i=1;$i<999;$i++)
         {
             $yanzheng = new Cad;
@@ -278,14 +294,10 @@ class ActivityController extends Controller
             }
             $number = rand(1,$count);
         }
-        $power = new Cad;
+        //验证无误，从会员表里取出会员信息
         $user = new Huiyuan;
         $users = $user->where('number',$session['number'])->first();
-        $tamenumber = $usermatch->where('match',3)->where('number',$session['number'])->first();
-        if($tamenumber == null)
-        {
-            return redirect($pth[5])->with('err','您未参加本项比赛！');
-        }
+        //向座号表里存入信息
         $input = new Cad;
         $input->name = $users['name'];
         $input->phone = $users['mphone'];
@@ -302,20 +314,26 @@ class ActivityController extends Controller
         }
         
     }
+    //CAD技能大赛文件提交页面
     public function file()
     {
         return view('layout.file');
     }
+    //CAD技能大赛文件提交系统
     public function upload(Request $request)
     {
         global $regexp_url;
+        //查询用户是否登陆
         if(!session()->has('number'))
         {
             return redirect('signup')->with('err','您未登陆，请先登陆');
         }
+        //从session中获取全部信息
         $session = session()->all();
+        //正则表达式匹配网址
         $path = url()->previous();
         preg_match ($regexp_url,$path,$pth);
+        //
         if ($request->isMethod('post')) 
         {
             $file = $request->file('picture');
@@ -333,6 +351,7 @@ class ActivityController extends Controller
                 $type = $file->getClientMimeType();     // image/jpeg
                 // 上传文件
                 $upiqid = uniqid();
+                //命名为日期+文件原名+独有加密码+CAD后缀
                 $filename = date('Y-m-d-H-i-s') . $originalName . '-' . $upiqid . '.' . $ext;
                 // 使用我们新建的uploads本地存储空间（目录）
                 $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
