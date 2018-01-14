@@ -41,3 +41,5 @@ Route::post('/dicechouqian','DiceController@chouqian');
 Route::get('/cadchouqian','ActivityController@cadchouqian');
 Route::get('/file','ActivityController@file');
 Route::post('/file','ActivityController@upload');
+Route::get('/table','AdminController@table');
+Route::post('/table','AdminController@houtai');
