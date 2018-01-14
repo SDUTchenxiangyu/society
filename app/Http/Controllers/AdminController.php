@@ -10,6 +10,7 @@ use App\Usermatch;
 use App\Matchname;
 use App\Baomingbiao;
 use App\Power;
+use Excel;
 
 class AdminController extends Controller
 {
@@ -118,22 +119,36 @@ class AdminController extends Controller
         $input = $request->all();
         //从会员表，会员报名比赛表，比赛名称表取值
         $number = new Usermatch;
-        $huiyuan = new Huiyuan;
         $name = new Matchname;
+        $nameofmatch = $name->where('id',$input['table'])->first();
         //计算一共有多少人报名了比赛
         $matchnumber = $number->count();
-        for($i=1;$matchnumber>=$i;$i++)
-        {
-            $baomingbiao = new Baomingbiao;
-            $numbertemp = $number->where('id',$i)->first();
-            $nametemp = $name->where('id',$numbertemp['match'])->first();
-            $huiyuantemp = $huiyuan->where('number',$numbertemp['number'])->first();
-            $baomingbiao->name = $huiyuantemp['name'];
-            $baomingbiao->mphone = $huiyuantemp['mphone'];
-            $baomingbiao->matchnum = $numbertemp['match'];
-            $baomingbiao->matchname = $nametemp['name'];
-            $baomingbiao->save();
+        $cellData = $number->where('match',$input['table'])->get();
+        $arr = array( array("id","姓名","手机号") ); 
+        foreach($cellData as $tables)
+        {   
+            $huiyuan = new Huiyuan;
+            $huiyuanchaxun = $huiyuan->where('number',$tables['number'])->first();
+            $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone']));
+            $arr = array_merge($arr,$temp);
         }
+        Excel::create($nameofmatch['name'].'比赛报名统计表',function($excel) use ($arr){
+            $excel->sheet('score', function($sheet) use ($arr){
+                $sheet->rows($arr);
+            });
+        })->export('xls');
+        // for($i=1;$matchnumber>=$i;$i++)
+        // {
+        //     $baomingbiao = new Baomingbiao;
+        //     $numbertemp = $number->where('id',$i)->first();
+        //     $nametemp = $name->where('id',$numbertemp['match'])->first();
+        //     $huiyuantemp = $huiyuan->where('number',$numbertemp['number'])->first();
+        //     $baomingbiao->name = $huiyuantemp['name'];
+        //     $baomingbiao->mphone = $huiyuantemp['mphone'];
+        //     $baomingbiao->matchnum = $numbertemp['match'];
+        //     $baomingbiao->matchname = $nametemp['name'];
+        //     $baomingbiao->save();
+        // }
         return "报名表已整理完毕，请下载！";
     }
     public function welcome()

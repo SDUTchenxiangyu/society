@@ -30,7 +30,6 @@ Route::post('/signup','AdminController@ysignup');
 Route::get('/signout','AdminController@signout');
 Route::get('/more','ActivityController@more');
 Route::post('/baoming','ActivityController@baoming');
-Route::get('/houtai','AdminController@houtai');
 Route::post('/tamebaoming','ActivityController@tamebaoming');
 Route::get('/self','AdminController@self');
 Route::post('/self','AdminController@power');
