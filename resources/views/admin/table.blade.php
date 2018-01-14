@@ -23,12 +23,17 @@
             <h2 class="form-signin-heading">请选择要打印的表格</h2>
             <label for="inputPassword" class="sr-only">核心授权码</label>
             <select name="table" class="form-control">
-                <option value="1">纸桥承重比赛</option>
-                <option value="2">纸牌搭楼比赛</option>
-                <option value="3">CAD技能大赛</option>
-                <option value="4">结构设计大赛</option>
-                <option>5</option>
+                <option value="1">纸桥承重比赛报名表</option>
+                <option value="2">纸牌搭楼比赛报名表</option>
+                <option value="3">CAD技能大赛报名表</option>
+                <option value="4">结构设计大赛报名表</option>
+                <option value="5">建筑之美报名表</option>
+                <option value="6">成图大赛报名表</option>
+                <option value="7">BIM软件算量报名表</option>
+                <option value="8">BIM沙盘模拟报名表</option>
+                <option value="11">CAD技能大赛抽签表</option>                                                
             </select>
+            <br>
             <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">验证</button>
         </form>
 @stop

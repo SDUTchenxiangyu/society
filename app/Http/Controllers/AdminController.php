@@ -116,7 +116,6 @@ class AdminController extends Controller
             return redirect('signup')->with('err','您未登陆，请先登陆');
         }
         $input = $request->all();
-        dd($input);
         //从会员表，会员报名比赛表，比赛名称表取值
         $number = new Usermatch;
         $huiyuan = new Huiyuan;
