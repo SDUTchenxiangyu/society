@@ -34,6 +34,6 @@
                 <option value="11">CAD技能大赛抽签表</option>                                                
             </select>
             <br>
-            <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">验证</button>
+            <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">打印</button>
         </form>
 @stop

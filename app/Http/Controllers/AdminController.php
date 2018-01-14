@@ -11,6 +11,10 @@ use App\Matchname;
 use App\Baomingbiao;
 use App\Power;
 use Excel;
+//定义全局变量regexp_url用于之后对url进行正则匹配
+global $regexp_url;
+//正则表达式匹配完会有一个带有六个数组元素的一维数组，数组第0个是完整网址，第1，2个是协议名，第3，4个是一级目录名，第五个是二级目录名
+$regexp_url = '~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i';
 
 class AdminController extends Controller
 {
@@ -179,21 +183,31 @@ class AdminController extends Controller
     //社团后台登陆入口
     public function power(Request $request)
     {
+        global $regexp_url;
         if(!session()->has('number'))
         {
             return redirect('signup')->with('err','您未登陆，请先登陆');
         }
+        //获取用户上一个页面的url地址
+        $path = url()->previous();
+        //使用正则表达式将url地址分割，得到最后的二级url地址
+        //正则表达式匹配
+        preg_match ($regexp_url,$path,$pth);
         $input = $request->input();
         $power = new Power;
         $session = session()->all();
         $password = $power->where('number',$session['number'])->first();
         if($password['password']==$input['password'])
         {
-            return redirect('self')->with('success',"已成功登陆，欢迎你，社团的贡献者！");
+            return redirect('houtai')->with('success',"已成功登陆，欢迎你，社团的贡献者！");
         }
         else
         {
-            return redirect('signup')->with('err',"密码不正确！");
+            return redirect($pth[5])->with('err',"密码不正确！");
         }
+    }
+    public function houtaiinto()
+    {
+        return view('admin.houtai');
     }
 }

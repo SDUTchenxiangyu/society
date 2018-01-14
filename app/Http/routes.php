@@ -42,3 +42,4 @@ Route::get('/file','ActivityController@file');
 Route::post('/file','ActivityController@upload');
 Route::get('/table','AdminController@table');
 Route::post('/table','AdminController@houtai');
+Route::get('/houtai','AdminController@houtaiinto');
