@@ -10,6 +10,8 @@ use App\Usermatch;
 use App\Matchname;
 use App\Baomingbiao;
 use App\Power;
+use App\Tame;
+use App\Cad;
 use Excel;
 //定义全局变量regexp_url用于之后对url进行正则匹配
 global $regexp_url;
@@ -54,6 +56,12 @@ class AdminController extends Controller
             return redirect('signin')
                 ->withErrors($validator)
                 ->withInput();
+        }
+        $ymphone = "/1[34578]\d{9}/";
+        preg_match ($ymphone,$input['mphone'],$pth);
+        if(!$pth)
+        {
+            return redirect('signin')->with('err',"手机号码不正确！");
         }
         $huiyuan = new Huiyuan;
         //验证会员表中是否已经有用户的信息        
@@ -115,32 +123,66 @@ class AdminController extends Controller
     //报名表整理
     public function houtai(Request $request)
     {
+        global $regexp_url;
         //检查session中是否存在学号
         if(!session()->has('number'))
         {
             return redirect('signup')->with('err','您未登陆，请先登陆');
         }
         $input = $request->all();
+        //获取用户上一个页面的url地址
+        $path = url()->previous();
+        //使用正则表达式将url地址分割，得到最后的二级url地址
+        //正则表达式匹配
+        preg_match ($regexp_url,$path,$pth);
         //从会员表，会员报名比赛表，比赛名称表取值
         $number = new Usermatch;
         $name = new Matchname;
         $nameofmatch = $name->where('id',$input['table'])->first();
+        $tempnumber = $number->where('match',$input['table'])->get();
         //计算一共有多少人报名了比赛
-        $matchnumber = $number->count();
-        $cellData = $number->where('match',$input['table'])->get();
-        $arr = array( array("id","姓名","手机号") ); 
-        foreach($cellData as $tables)
-        {   
-            $huiyuan = new Huiyuan;
-            $huiyuanchaxun = $huiyuan->where('number',$tables['number'])->first();
-            $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone']));
-            $arr = array_merge($arr,$temp);
+        $matchnumber = $tempnumber->count();
+        if($matchnumber==0&&$input['table']!=11)
+        {
+            return redirect($pth[5])->with('err','本项比赛没有用户报名！');
         }
-        Excel::create($nameofmatch['name'].'比赛报名统计表',function($excel) use ($arr){
-            $excel->sheet('score', function($sheet) use ($arr){
-                $sheet->rows($arr);
-            });
-        })->export('xls');
+        if($input['table']!=11)
+        {
+            $cellData = $number->where('match',$input['table'])->get();
+            $arr = array( array("id","姓名","手机号") ); 
+            foreach($cellData as $tables)
+            {   
+                $huiyuan = new Huiyuan;
+                $huiyuanchaxun = $huiyuan->where('number',$tables['number'])->first();
+                $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone']));
+                $arr = array_merge($arr,$temp);
+            }
+            Excel::create($nameofmatch['name'].'比赛报名统计表',function($excel) use ($arr){
+                $excel->sheet('score', function($sheet) use ($arr){
+                    $sheet->rows($arr);
+                });
+            })->export('xls');
+        }
+        else
+        {
+            $tableofcad = new Cad;
+            $cellData = $tableofcad->get();
+            $arr = array( array("id","姓名","手机号","座号","年级") );
+            foreach($cellData as $tables)
+            {
+                $huiyuan = new Huiyuan;
+                $huiyuanchaxun = $huiyuan->where('number',$tables['number'])->first();
+                $numberofcad = new Cad;
+                $dataofcad = $numberofcad->where('number',$tables['number'])->first();
+                $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone'],$dataofcad['power'],$dataofcad['level']));
+                $arr = array_merge($arr,$temp);
+            } 
+            Excel::create('CAD技能大赛座号统计表',function($excel) use ($arr){
+                $excel->sheet('score', function($sheet) use ($arr){
+                    $sheet->rows($arr);
+                });
+            })->export('xls');
+        }
         // for($i=1;$matchnumber>=$i;$i++)
         // {
         //     $baomingbiao = new Baomingbiao;
