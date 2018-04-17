@@ -152,20 +152,50 @@ class AdminController extends Controller
         }
         if($input['table']!=11)
         {
-            $cellData = $number->where('match',$input['table'])->get();
-            $arr = array( array("id","姓名","手机号","班级","学号") ); 
-            foreach($cellData as $tables)
-            {   
-                $huiyuan = new Huiyuan;
-                $huiyuanchaxun = $huiyuan->where('number',$tables['number'])->first();
-                $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone'],$huiyuanchaxun['sclass'],$huiyuanchaxun['number']));
-                $arr = array_merge($arr,$temp);
+            if($input['table']==6)
+            {
+                $cellData = $number->where('match',$input['table'])->get();
+                $arr = array( array("id","姓名","手机号","班级","学号","方向") ); 
+                foreach($cellData as $tables)
+                {   
+                    $huiyuan = new Huiyuan;
+                    $optional = new Usermatch;
+                    $huiyuanchaxun = $huiyuan->where('number',$tables['number'])->first();
+                    $fangxiangnumber = $optional->where('number',$tables['number'])->first();
+                    if($fangxiangnumber['optional'] == 1){
+                        $useroptional = "道桥";
+                    }
+                    elseif($fangxiangnumber['optional'] == 2){
+                        $useroptional = "房建";
+                    }
+                    else{
+                        $useroptional = "null";
+                    }
+                    $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone'],$huiyuanchaxun['sclass'],$huiyuanchaxun['number'],$useroptional));
+                    $arr = array_merge($arr,$temp);
+                }
+                Excel::create($nameofmatch['name'].'比赛报名统计表',function($excel) use ($arr){
+                    $excel->sheet('score', function($sheet) use ($arr){
+                        $sheet->rows($arr);
+                    });
+                })->export('xls');
             }
-            Excel::create($nameofmatch['name'].'比赛报名统计表',function($excel) use ($arr){
-                $excel->sheet('score', function($sheet) use ($arr){
-                    $sheet->rows($arr);
-                });
-            })->export('xls');
+            else{
+                $cellData = $number->where('match',$input['table'])->get();
+                $arr = array( array("id","姓名","手机号","班级","学号") ); 
+                foreach($cellData as $tables)
+                {   
+                    $huiyuan = new Huiyuan;
+                    $huiyuanchaxun = $huiyuan->where('number',$tables['number'])->first();
+                    $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone'],$huiyuanchaxun['sclass'],$huiyuanchaxun['number']));
+                    $arr = array_merge($arr,$temp);
+                }
+                Excel::create($nameofmatch['name'].'比赛报名统计表',function($excel) use ($arr){
+                    $excel->sheet('score', function($sheet) use ($arr){
+                        $sheet->rows($arr);
+                    });
+                })->export('xls');
+            }
         }
         else
         {

@@ -129,8 +129,17 @@ class ActivityController extends Controller
         {
             $update = DB::table('huiyuan')->where('number', $session['number'])->update(['sclass' => $input['sclass']]);
         }
-        $match->match = $input['match'];
-        $match->number = $session['number'];
+        if(isset($input['table']))
+        {
+            $match->match = $input['match'];
+            $match->number = $session['number'];
+            $match->optional = $input['table'];
+        }
+        else
+        {
+            $match->match = $input['match'];
+            $match->number = $session['number'];
+        }
         if($match->save())
         {
             return redirect($pth[5])->with('success',$session['name']);

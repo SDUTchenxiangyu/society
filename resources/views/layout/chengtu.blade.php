@@ -26,6 +26,12 @@
         <label for="inputEmail" class="sr-only">班级</label>
         <input type="text" id="inputsclass" name="sclass" class="form-control" placeholder="班级" required autofocus>
         <br>
+		<h4 class="form-signin-heading">选择方向</h4>
+        <select name="table" class="form-control">
+            <option value="1">道桥方向</option>
+            <option value="2">房建方向</option>                                               
+        </select>
+		<br>
         <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">报名</button>
       </form>
 @stop
