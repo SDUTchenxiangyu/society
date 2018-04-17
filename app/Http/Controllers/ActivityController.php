@@ -10,6 +10,7 @@ use App\Http\Requests;
 use App\Tame;
 use App\Cad;
 use Storage;
+use DB;
 //定义全局变量regexp_url用于之后对url进行正则匹配
 global $regexp_url;
 //正则表达式匹配完会有一个带有六个数组元素的一维数组，数组第0个是完整网址，第1，2个是协议名，第3，4个是一级目录名，第五个是二级目录名
@@ -122,6 +123,12 @@ class ActivityController extends Controller
             return redirect($pth[5])->with('err','您已报名，请勿重复报名');
         }
         //准备入库
+        $inspectforclass = new Huiyuan;
+        $inspectforclassstring = $inspectforclass->where('number',$session['number'])->first();
+        if(!$inspectforclassstring['sclass'])
+        {
+            $update = DB::table('huiyuan')->where('number', $session['number'])->update(['sclass' => $input['sclass']]);
+        }
         $match->match = $input['match'];
         $match->number = $session['number'];
         if($match->save())

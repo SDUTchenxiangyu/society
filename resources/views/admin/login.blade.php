@@ -20,6 +20,8 @@
         <input type="text" id="inputusenumber" name="number" class="form-control" placeholder="学号" required autofocus>
         <label for="inputEmail" class="sr-only">姓名</label>
         <input type="text" id="inputname" name="name" class="form-control" placeholder="姓名" required autofocus>
+        <label for="inputEmail" class="sr-only">班级</label>
+        <input type="text" id="inputsclass" name="sclass" class="form-control" placeholder="班级" required autofocus>
         <label for="inputEmail" class="sr-only">手机号</label>
         <input type="text" id="inputmphone" name="mphone" class="form-control" placeholder="手机号" required autofocus>
         <label for="inputPassword" class="sr-only">密码</label>

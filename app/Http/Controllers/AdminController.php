@@ -38,6 +38,7 @@ class AdminController extends Controller
         $rules =  [
             'number' => 'required|numeric',
             'name' => 'required|string',
+            'sclass' => 'required|string',
             'mphone' => 'required|numeric',
             'password' => 'required',
         ];
@@ -46,6 +47,8 @@ class AdminController extends Controller
             'number.numeric' => '学号栏不得填写数字以外的符号！',
             'name.require' => '姓名不能为空！',
             'name.string' => '姓名不能填写非法字符！',
+            'sclass.require' => '班级不能为空！',
+            'sclass.string' => '班级不能填写非法字符！',
             'mphone.require' => '手机号不能为空！',
             'mphone.numeric' => '手机号不得填写数字以外的符号！',
             'password.required' => '密码不能为空！',
@@ -72,6 +75,7 @@ class AdminController extends Controller
         }
         //入库操作
         $huiyuan->name = $input['name'];
+        $huiyuan->class = $input['class'];
         $huiyuan->number = $input['number'];
         $huiyuan->mphone = $input['mphone'];
         $huiyuan->password = $input['password'];
@@ -149,12 +153,12 @@ class AdminController extends Controller
         if($input['table']!=11)
         {
             $cellData = $number->where('match',$input['table'])->get();
-            $arr = array( array("id","姓名","手机号") ); 
+            $arr = array( array("id","姓名","手机号","班级") ); 
             foreach($cellData as $tables)
             {   
                 $huiyuan = new Huiyuan;
                 $huiyuanchaxun = $huiyuan->where('number',$tables['number'])->first();
-                $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone']));
+                $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone'],$huiyuanchaxun['sclass']));
                 $arr = array_merge($arr,$temp);
             }
             Excel::create($nameofmatch['name'].'比赛报名统计表',function($excel) use ($arr){
@@ -167,14 +171,14 @@ class AdminController extends Controller
         {
             $tableofcad = new Cad;
             $cellData = $tableofcad->get();
-            $arr = array( array("id","姓名","手机号","座号","年级") );
+            $arr = array( array("id","姓名","手机号","座号","年级","班级") );
             foreach($cellData as $tables)
             {
                 $huiyuan = new Huiyuan;
                 $huiyuanchaxun = $huiyuan->where('number',$tables['number'])->first();
                 $numberofcad = new Cad;
                 $dataofcad = $numberofcad->where('number',$tables['number'])->first();
-                $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone'],$dataofcad['power'],$dataofcad['level']));
+                $temp = array(array($tables['id'],$huiyuanchaxun['name'],$huiyuanchaxun['mphone'],$dataofcad['power'],$dataofcad['level'],$huiyuanchaxun['sclass']));
                 $arr = array_merge($arr,$temp);
             } 
             Excel::create('CAD技能大赛座号统计表',function($excel) use ($arr){

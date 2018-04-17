@@ -23,6 +23,9 @@
         <input type="hidden" name="match" value="6">
         <h2 class="form-signin-heading">成图大赛报名</h2>
         <br>
+        <label for="inputEmail" class="sr-only">班级</label>
+        <input type="text" id="inputsclass" name="sclass" class="form-control" placeholder="班级" required autofocus>
+        <br>
         <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">报名</button>
       </form>
 @stop
