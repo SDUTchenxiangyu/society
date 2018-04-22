@@ -75,7 +75,7 @@ class AdminController extends Controller
         }
         //入库操作
         $huiyuan->name = $input['name'];
-        $huiyuan->sclass = $input['class'];
+        $huiyuan->sclass = $input['sclass'];
         $huiyuan->number = $input['number'];
         $huiyuan->mphone = $input['mphone'];
         $huiyuan->password = $input['password'];
