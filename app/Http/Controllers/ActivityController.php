@@ -352,6 +352,7 @@ class ActivityController extends Controller
         //
         if ($request->isMethod('post')) 
         {
+            date_default_timezone_set('Etc/GMT-8');
             $file = $request->file('picture');
             // 文件是否上传成功
             if(!$request->hasFile('picture'))
