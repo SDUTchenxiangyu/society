@@ -33,5 +33,6 @@
         </select>
 		<br>
         <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">报名</button>
+        <a class="btn btn-lg btn-primary btn-block" href="{{url('/file')}}" role="button">作品提交</a>
       </form>
 @stop
