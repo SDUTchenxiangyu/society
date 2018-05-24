@@ -31,7 +31,8 @@
                 <option value="6">成图大赛报名表</option>
                 <option value="7">BIM软件算量报名表</option>
                 <option value="8">BIM沙盘模拟报名表</option>
-                <option value="11">CAD技能大赛抽签表</option>                                                
+                <option value="11">CAD技能大赛抽签表</option> 
+                <option value="12">桥举千斤报名表</option>                                                
             </select>
             <br>
             <button id="jgzjbutton" class="btn btn-lg btn-primary btn-block" type="submit">打印</button>
