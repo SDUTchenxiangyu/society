@@ -50,9 +50,6 @@ class ActivityController extends Controller
     }
     public function poker()
     {
-        global $chenxiangyu;
-        dd($chenxiangyu);
-        //纸牌搭楼
         return view('layout.poker');
     }
     public function bridge()
