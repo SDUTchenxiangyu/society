@@ -62,6 +62,11 @@ class ActivityController extends Controller
         //纸桥承重
         return view('layout.bridgeofbamboo');
     }
+    public function bridgeofzhongjiao()
+    {
+        //中交桥梁设计大赛
+        return view('layout.bridgeofzhongjiao');
+    }
     //此控制器用于连接/more页面，用于为用户提供报名后显示出比赛的相关信息
     public function more()
     {

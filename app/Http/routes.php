@@ -44,3 +44,4 @@ Route::get('/table','AdminController@table');
 Route::post('/table','AdminController@houtai');
 Route::get('/houtai','AdminController@houtaiinto');
 Route::get('/bridgeofbamboo','ActivityController@bridgeofbamboo');
+Route::get('/bridgeofzhongjiao','ActivityController@bridgeofzhongjiao');

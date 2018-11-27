@@ -58,7 +58,8 @@
                     <li><a href="{{url('/jiegou')}}">结构设计大赛</a></li>
                     <li><a href="{{url('/bimsoft')}}">BIM软件算量大赛</a></li>
                     <li><a href="{{url('/bimgrass')}}">BIM沙盘模拟大赛</a></li>
-                    <li><a href="{{url('/cadstill')}}">CAD技能大赛</a></li>                    
+                    <li><a href="{{url('/cadstill')}}">CAD技能大赛</a></li>
+                    <li><a href="{{url('/bridgeofzhongjiao')}}">桥梁设计大赛</a></li>                    
                     <li role="separator" class="divider"></li>
                     <li class="dropdown-header">会员活动</li>
                     <li><a href="{{url('/building')}}">建筑之美</a></li>
