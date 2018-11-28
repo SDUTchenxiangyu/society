@@ -60,7 +60,7 @@ class AdminController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $ymphone = "/1[34578]\d{9}/";
+        $ymphone = "/1[345789]\d{9}/";
         preg_match ($ymphone,$input['mphone'],$pth);
         if(!$pth)
         {
